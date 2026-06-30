@@ -32,17 +32,22 @@ app.set('views', path.join(__dirname, 'src/views'));
  */
 app.get('/', async (req, res) => {
     const title = 'Home';
-    res.render('home', { title });
+    await res.render('home', { title });
 });
 
 app.get('/organizations', async (req, res) => {
     const title = 'Our Partner Organizations';
-    res.render('organizations', { title });
+    await res.render('organizations', { title });
 });
 
 app.get('/projects', async (req, res) => {
     const title = 'Service Projects';
-    res.render('projects', { title });
+    await res.render('projects', { title });
+});
+
+app.get('/categories', async (req, res) => {
+    const title = 'Categories';
+    await res.render('categories', { title });
 });
 
 

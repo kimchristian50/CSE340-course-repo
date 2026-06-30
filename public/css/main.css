@@ -1,31 +1,204 @@
+/* ==========================================
+   1. RESET & VARIABLES
+   ========================================== */
+:root {
+    --primary-color: #1a365d;
+    /* Deep professional navy */
+    --secondary-color: #2b6cb0;
+    /* Vibrant slate blue */
+    --accent-color: #319795;
+    /* Service teal */
+    --text-dark: #2d3748;
+    /* Off-black for better readability */
+    --text-light: #718096;
+    /* Muted gray for small details */
+    --bg-light: #f7fafc;
+    /* Soft light gray backdrop */
+    --card-bg: #ffffff;
+    /* Crisp white containers */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================
+   2. BODY & LAYOUT STRUCTURE
+   ========================================== */
 html,
 body {
-    background-color: lightblue;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+    height: 100%;
 }
 
 body {
-    nav {
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
 
-        li {
-            display: inline;
-            margin-right: 15px;
-        }
+/* Main Content Wrapper (Centers the content professionally) */
+main {
+    flex: 1 0 auto;
+    /* this makes the footer sticky to the bottom of the page */
+    max-width: 1000px;
+    width: 90%;
+    margin: 2rem auto;
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
 
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
+/* ==========================================
+   3. NAVIGATION HEADER
+   ========================================== */
+nav {
+    background-color: var(--primary-color);
+    padding: 1rem 0;
+    box-shadow: var(--box-shadow);
+}
 
-            &:hover {
-                color: #0066cc;
-            }
-        }
-    }
+nav ul {
+    list-style-type: none;
+    max-width: 1000px;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+}
+
+nav li {
+    display: inline;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+nav a:hover {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+}
+
+/* ==========================================
+   4. TYPOGRAPHY
+   ========================================== */
+h1 {
+    font-size: 2.25rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    border-bottom: 3px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+/* ==========================================
+   5. LISTS & PAGE SPECIFIC COMPONENT STYLES
+   ========================================== */
+/* Custom styling for generic bullet lists (Categories / Projects) */
+main ul {
+    list-style-position: inside;
+    margin-bottom: 1.5rem;
+}
+
+main ul li {
+    padding: 0.75rem;
+    background-color: var(--bg-light);
+    margin-bottom: 0.5rem;
+    border-left: 4px solid var(--accent-color);
+    border-radius: 0 4px 4px 0;
+    list-style-type: none;
+    /* Removes raw bullets for modern look */
+}
+
+/* Home Page Logo */
+.main-logo {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    width: 400px;
+    margin: 2rem auto 0 auto;
+    border-radius: var(--border-radius);
+}
+
+/* Organizations Grid View Layout */
+main h1+p+ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding-left: 0;
+}
+
+main h1+p+ul li {
+    background-color: var(--card-bg);
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid var(--secondary-color);
+    border-left: none;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+main h1+p+ul img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+main h1+p+ul strong {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+/* ==========================================
+   6. FOOTER STYLING
+   ========================================== */
+footer {
+    flex-shrink: 0;
+    /* stops the browser from shrinking the footer if the page gets long - this goes with the flex-grow rule above */
+    background-color: var(--primary-color);
+    color: #ffffff;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: auto;
+    font-size: 0.9rem;
+    border-top: 4px solid var(--accent-color);
+}
+
+footer p {
+    color: #e2e8f0;
+    margin-bottom: 0;
 }
