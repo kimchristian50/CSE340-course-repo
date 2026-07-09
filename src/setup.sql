@@ -4,7 +4,7 @@ CREATE TABLE organization (
 	description TEXT NOT NULL,
 	contact_email VARCHAR(250) NOT NULL,
 	logo_filename VARCHAR(250) NOT NULL
-)
+);
 
 INSERT INTO organization (name, description, contact_email, logo_filename)
 VALUES 
@@ -34,7 +34,7 @@ title VARCHAR(150) NOT NULL,
 description TEXT NOT NULL,
 location TEXT NOT NULL,
 date DATE NOT NULL
-)
+);
 
 INSERT INTO project (organization_id, title, description, location, date)
 VALUES 
@@ -59,7 +59,48 @@ VALUES
     (3, 'Animal Shelter Blanket Making', 'Gathering volunteers to cut and tie fleece blankets for local rescue dogs and cats.', 'Lubbock Animal Shelter, Lubbock, TX', '2026-10-17'),
     (3, 'Holiday Toy Drive Wrap Event', 'Checking, sorting, and gift-wrapping holiday toys for families in need.', 'Unity Hall Room B, Lubbock, TX', '2026-12-10');
 
+-- Create the main category table
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
 
+-- Create the join table to handle the Many-to-Many relationship
+CREATE TABLE project_category (
+    project_id INT REFERENCES project(project_id) ON DELETE CASCADE,
+    category_id INT REFERENCES category(category_id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id)
+);
+
+INSERT INTO category (name) VALUES 
+    ('Construction'), 	-- ID 1
+    ('Sustainability'), -- ID 2
+    ('Education'), 		-- ID 3
+    ('Agriculture'),    -- ID 4
+    ('Community Outreach'),    -- ID 5
+    ('Animal Care');  	-- ID 6
+
+INSERT INTO project_category (project_id, category_id) VALUES 
+    -- BrightFuture Builders (Projects 1-5)
+    (1, 1), (1, 5), -- Ramp Build: Construction, Community Outreach
+    (2, 1), (2, 2), -- Roofing Seminar: Construction, Sustainability
+    (3, 1), (3, 2), -- Bench Restoration: Construction, Sustainability
+    (4, 1), (4, 5), -- Housing Framing: Construction, Community Outreach
+    (5, 1), (5, 2), (5, 5), -- Insulation Install: Construction, Sustainability, Community Outreach
+
+    -- GreenHarvest Growers (Projects 6-10)
+    (6, 4), 		-- Seedling Planting: Agriculture
+    (7, 1), (7, 4), -- Irrigation Setup: Construction, Agriculture
+    (8, 3), (8, 4), -- Composting 101: Education, Agriculture
+    (9, 4), (9, 5), -- Market Prep: Agriculture, Community Outreach
+    (10, 3), (10, 4),-- School Orchard: Education, Agriculture
+
+    -- UnityServe Volunteers (Projects 11-15)
+    (11, 5),		 -- Food Drive Sorting: Community Outreach
+    (12, 3), (12, 5),-- Senior Tech Class: Education, Community Outreach
+    (13, 3), (13, 5),-- Backpack Drive: Education, Community Outreach
+    (14, 5), (14, 6),-- Animal Blanket Making: Community Outreach, Animal Care
+    (15, 5);          -- Toy Drive Wrap: Community Outreach
 
 SELECT 
 project.project_id,
