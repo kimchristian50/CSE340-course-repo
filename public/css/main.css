@@ -183,6 +183,12 @@ main h1+p+ul strong {
     margin-bottom: 0.25rem;
 }
 
+.upcoming-projects,
+.upcoming-organizations {
+    text-decoration: none;
+    color: var(--text-dark);
+}
+
 /* ==========================================
    6. FOOTER STYLING
    ========================================== */
