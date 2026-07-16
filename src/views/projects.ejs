@@ -7,7 +7,7 @@
         <h2>Upcoming Service Projects</h2>
         <ul>
             <% projects.forEach(project=> { %>
-                <li class="display-grid">
+                <li>
                     <a class="upcoming-projects" href="/project/<%= project.project_id %>">
                         <%= project.date.toLocaleDateString('en-US', { month: 'long' , day: 'numeric' , year: 'numeric'
                             }) %>: <%= project.title %>

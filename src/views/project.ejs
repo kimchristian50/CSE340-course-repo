@@ -14,6 +14,18 @@
             <%= project.date.toLocaleDateString('en-US', { month: 'long' , day: 'numeric' , year: 'numeric' }) %> - <%=
                     project.location %>
         </p>
+        <h3>Categories:</h3>
+        <ul>
+            <% categories.forEach(category=> { %>
+                <li>
+                    <a href="/category/<%= category.category_id %>" class="tag">
+                        <%= category.name %>
+                    </a>
+
+                </li>
+                <% }); %>
+
+        </ul>
         <p>Sponsored by:
             <a href="/organization/<%= project.organization_id %>">
                 <%= project.organization_name %>

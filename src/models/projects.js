@@ -31,7 +31,7 @@ const getProjectsByOrganizationId = async (organizationId) => {
           description,
           location,
           date
-        FROM project
+        FROM public.project
         WHERE organization_id = $1
         ORDER BY date;
       `;
@@ -53,7 +53,7 @@ async function getUpcomingProjects(number_of_projects) {
           location,
           organization.organization_id,
           organization.name as organization_name
-        FROM project
+        FROM public.project
         JOIN public.organization ON organization.organization_id = project.organization_id
         ORDER BY date
         LIMIT $1;
