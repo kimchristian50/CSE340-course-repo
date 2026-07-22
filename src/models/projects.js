@@ -85,4 +85,33 @@ async function getProjectDetails(id) {
   return result.rows[0]; // return the first row (the project object)
 }
 
-export { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects }  
+/**
+ * Creates a new organization in the database.
+ * @param {string} name - The name of the organization.
+ * @param {string} description - A description of the organization.
+ * @param {string} contactEmail - The contact email for the organization.
+ * @param {string} logoFilename - The filename of the organization's logo.
+ * @returns {string} The id of the newly created organization record.
+ */
+const createProject = async (title, description, location, date, organizationId) => {
+  const query = `
+      INSERT INTO project (title, description, location, date, organization_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING project_id
+    `;
+
+  const queryParams = [title, description, location, date, organizationId];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error('Failed to create organization');
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log('Created new project with ID:', result.rows[0].project_id);
+  }
+
+  return result.rows[0].project_id;
+};
+
+export { getAllProjects, getProjectsByOrganizationId, getProjectDetails, getUpcomingProjects, createProject }  

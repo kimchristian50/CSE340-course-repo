@@ -12,10 +12,12 @@
                         <%= project.date.toLocaleDateString('en-US', { month: 'long' , day: 'numeric' , year: 'numeric'
                             }) %>: <%= project.title %>
                     </a>
-                    <a class="upcoming-organizations" href="organization/<%= project.organization_id %>">(<%= project.organization_name %>)
+                    <a class="upcoming-organizations" href="organization/<%= project.organization_id %>">(<%=
+                            project.organization_name %>)
                     </a>
                 </li>
                 <% }); %>
         </ul>
+        <p><a href="/new-project">Add a new project</a></p>
     </main>
     <%- include('partials/footer') %>
