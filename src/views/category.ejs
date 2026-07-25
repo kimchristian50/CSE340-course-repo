@@ -10,11 +10,19 @@
         <h3>Service Projects</h3>
         <ul>
             <% projects.forEach(project=> { %>
-                <li><a href="/project/<%= project.project_id %>">
-                        <%= project.title %>: <%= project.description %>
-                    </a></li>
-                <% }) %>
+                <li>
+                    <a href="/project/<%= project.project_id %>">
+                        <strong>
+                            <%= project.title %>
+                        </strong>
+                    </a>
+                    <p>
+                        <%= project.description %>
+                            <% }) %>
+                    </p>
+                </li>
         </ul>
+        <p><a href="/edit-category/<%= category.category_id %>">Edit Category</a></p>
 
     </main>
     <%- include('partials/footer') %>

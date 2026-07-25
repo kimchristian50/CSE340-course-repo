@@ -66,7 +66,7 @@ const processNewOrganizationForm = async (req, res) => {
         });
 
         // Redirect back to the new organization form
-        return res.redirect('/new-organization');
+        return res.redirect(`/new-organization`);
     }
 
     const { name, description, contactEmail } = req.body;
@@ -88,8 +88,8 @@ const processEditOrganizationForm = async (req, res) => {
             req.flash('error', error.msg);
         });
 
-        // Redirect back to the new organization form
-        return res.redirect('/edit-organization');
+        // Redirect back to the edit organization form
+        return res.redirect(`/edit-organization`);
     }
     const organizationId = req.params.id;
 
@@ -97,13 +97,17 @@ const processEditOrganizationForm = async (req, res) => {
     const logoFilename = req.body.logoFilename || 'placeholder-logo.png';
 
     const { name, description, contactEmail } = req.body; // gets the data from req.body
-
-    await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
-
-    // set a success flash message
-    req.flash('success', 'Organization updated successfully!');
-
-    res.redirect(`/organization/${organizationId}`);
+    try {
+        // update in database
+        await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
+        // set a success flash message and redirect back to organization details
+        req.flash('success', 'Organization updated successfully!');
+        res.redirect(`/organization/${organizationId}`);
+    } catch (error) {
+        console.error('Error updating organization:', error);
+        request.flash('error', 'There was an error updating the organization.');
+        return response.redirect(`/edit-organization/${organizationId}`);
+    }
 }
 
 // export any controller functions

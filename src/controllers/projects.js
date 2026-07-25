@@ -1,5 +1,5 @@
 // Import any needed model functions 
-import { getAllProjects, getProjectDetails, getUpcomingProjects, createProject } from '../models/projects.js'
+import { getAllProjects, getProjectDetails, getUpcomingProjects, createProject, updateProject } from '../models/projects.js'
 import { getCategoriesByProject } from '../models/categories.js'
 import { getAllOrganizations } from '../models/organizations.js'
 import { body, validationResult } from 'express-validator';
@@ -88,5 +88,52 @@ const processNewProjectForm = async (req, res) => {
     }
 }
 
+const showEditProjectForm = async (request, response, next) => {
+    const projectId = request.params.id;
+    const project = await getProjectDetails(projectId);
+
+    if (!project) {
+        const err = new Error("Project not found");
+        err.status = 404;
+        return next(err);
+    }
+
+    const organizations = await getAllOrganizations();
+
+    const title = "Edit Project";
+    return response.render("edit-project", { title, project, organizations });
+};
+
+const processEditProjectForm = async (request, response, next) => {
+    const projectId = request.params.id;
+
+    // check validation errors from express-validator
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+        // Validation failed - loop through errors
+        errors.array().forEach((error) => {
+            request.flash('error', error.msg);
+        });
+        // Redirect back to the edit project form
+        return response.redirect(`edit-project/${projectId}`);
+    }
+
+    // extract values from form body
+    const { title, description, location, date, organizationId } = request.body;
+
+    try {
+        // update in database
+        await updateProject(projectId, organizationId, title, description, location, date);
+
+        // flash success and redirect back to project details
+        request.flash("success", "Project updated successfully!");
+        return response.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error('Error updating project:', error);
+        request.flash('error', 'There was an error updating the service project.');
+        return response.redirect(`/edit-project/${projectId}`);
+    }
+};
+
 // export any controller functions
-export { showProjectsPage, showProjectDetailsPage, processNewProjectForm, showNewProjectForm, projectValidation };
+export { showProjectsPage, showProjectDetailsPage, processNewProjectForm, showNewProjectForm, projectValidation, showEditProjectForm, processEditProjectForm };

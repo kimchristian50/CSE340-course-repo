@@ -31,7 +31,8 @@ async function getProjectsByCategory(category_id) {
           category.category_id,
           name,
           project.project_id,
-          title
+          title,
+          description
         FROM project
         JOIN project_category ON project.project_id = project_category.project_id
         JOIN category ON project_category.category_id = category.category_id
@@ -85,4 +86,48 @@ const updateCategoryAssignments = async (projectId, categoryIds) => {
   }
 }
 
-export { getAllCategories, getCategoryDetails, getCategoriesByProject, getProjectsByCategory, updateCategoryAssignments }  
+const createCategory = async (name) => {
+  const query = `
+    INSERT INTO category (name)
+    VALUES ($1)
+    RETURNING category_id
+    `;
+  
+  const queryParam = [name];
+  const result = await db.query(query, queryParam);
+
+  if (result.rows.length === 0) {
+    throw new Error('Failed to create organization');
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log('Created new category with ID:', result.rows[0].category_id);
+  }
+
+  return result.rows[0].category_id;
+}
+
+const updateCategory = async (categoryId, name) => {
+  const query = `
+    UPDATE category
+    SET name = $1
+    WHERE category_id = $2
+    RETURNING category_id;
+  `;
+
+  const queryParams = [name, categoryId];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error('Category not found');
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log('Updated category with ID:', categoryId);
+  }
+
+  return result.rows[0].category_id;
+};
+
+
+export { getAllCategories, getCategoryDetails, getCategoriesByProject, getProjectsByCategory, updateCategoryAssignments, createCategory, updateCategory  }  

@@ -1,9 +1,19 @@
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
-import { showOrganizationsPage } from './controllers/organizations.js';
-import { showProjectsPage, showProjectDetailsPage, processNewProjectForm, showNewProjectForm, projectValidation } from './controllers/projects.js';
-import { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm , processAssignCategoriesForm } from './controllers/categories.js';
+import { showProjectsPage, showProjectDetailsPage, processNewProjectForm, showNewProjectForm, projectValidation, showEditProjectForm, processEditProjectForm } from './controllers/projects.js';
 import {
+    showCategoriesPage,
+    showCategoryDetailsPage,
+    showAssignCategoriesForm,
+    processAssignCategoriesForm,
+    showNewCategoryForm,
+    processNewCategoryForm,
+    categoryValidation,
+    showEditCategoryForm,
+    processEditCategoryForm
+} from './controllers/categories.js';
+import {
+    showOrganizationsPage,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
@@ -25,17 +35,21 @@ router.get('/category/:id', showCategoryDetailsPage);
 router.get('/new-organization', showNewOrganizationForm);
 router.get('/edit-organization/:id', showEditOrganizationForm);
 router.get('/new-project', showNewProjectForm);
-// router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.get('/assign-categories/:id', showAssignCategoriesForm);
+router.get('/edit-project/:id', showEditProjectForm);
+router.get('/new-category', showNewCategoryForm);
+router.get('/edit-category/:id', showEditCategoryForm);
 
-// Route to handle new organization/project form submission
+// Route to handle new form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
-// router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 router.post('/assign-categories/:id', processAssignCategoriesForm);
+router.post('/new-category', categoryValidation, processNewCategoryForm);
 
-// Route to handle the edit organization form submission
+// Route to handle the edit form submission
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
+router.post('/edit-project/:id', projectValidation, processEditProjectForm);
+router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 
 // error-handling routes
 router.get('/test-error', testErrorPage);
