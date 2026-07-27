@@ -19,13 +19,13 @@ const projectValidation = [
         .notEmpty()
         .withMessage('Project description is required')
         .isLength({ max: 1000 })
-        .withMessage('Organization description cannot exceed 1000 characters'),
+        .withMessage('Project description cannot exceed 1000 characters'),
     body('location')
         .trim()
         .notEmpty()
         .withMessage('Project location is required')
         .isLength({ max: 200 })
-        .withMessage('Project title must be between 3 and 150 characters'),
+        .withMessage('Project location must be between 3 and 150 characters'),
     body('date')
         .notEmpty().withMessage('Date is required')
         .isISO8601().withMessage('Date must be a valid date format'),
