@@ -267,6 +267,7 @@ form {
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="date"],
+.form-group input[type="password"],
 .form-group textarea,
 .form-group select {
     width: 100%;
@@ -289,6 +290,7 @@ form {
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus,
 .form-group input[type="date"]:focus,
+.form-group input[type="password"]:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
@@ -298,7 +300,8 @@ form {
 }
 
 /* Primary Action Button */
-form button[type="submit"] {
+form button[type="submit"],
+.link {
     align-self: flex-start;
     background-color: var(--secondary-color);
     color: #ffffff;
@@ -312,12 +315,18 @@ form button[type="submit"] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-form button[type="submit"]:hover {
+form button[type="submit"]:hover,
+.link:hover {
     background-color: var(--primary-color);
 }
 
-form button[type="submit"]:active {
+form button[type="submit"]:active,
+.link:active {
     transform: translateY(1px);
+}
+
+.link {
+    text-decoration: none;
 }
 
 .form-group select {
