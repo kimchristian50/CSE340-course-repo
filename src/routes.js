@@ -65,6 +65,7 @@ router.get('/category/:id', showCategoryDetailsPage);
 router.get('/assign-categories/:id', requireRole('admin'), showAssignCategoriesForm);
 router.get('/new-category', requireRole('admin'), showNewCategoryForm);
 router.get('/edit-category/:id', requireRole('admin'), showEditCategoryForm);
+router.post('/edit-category/:id', requireRole('admin'), categoryValidation, processEditCategoryForm);
 router.post('/assign-categories/:id', requireRole('admin'), processAssignCategoriesForm);
 router.post('/new-category', requireRole('admin'), categoryValidation, processNewCategoryForm);
 
