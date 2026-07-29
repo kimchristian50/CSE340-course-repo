@@ -8,6 +8,9 @@
         </p>
         <p>Email: <%= email %>
         </p>
+            <% if (user && user.role_name==='admin' ) { %>
+                <a href="/users" class="link">View All Users</a>
+                <% } %>
 
     </main>
     <%- include('partials/footer') %>

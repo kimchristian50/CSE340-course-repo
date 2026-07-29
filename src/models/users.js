@@ -18,7 +18,7 @@ const createUser = async (name, email, passwordHash) => {
     }
 
     if (process.env.ENABLE_SQL_LOGGING === 'true') {
-        console.log('Created new user with ID:', result.rows[0].category_id);
+        console.log('Created new user with ID:', result.rows[0].user_id);
     }
 
     return result.rows[0].user_id;
@@ -40,6 +40,18 @@ const findUserByEmail = async (email) => {
     }
 
     return result.rows[0];
+}
+
+const getAllUsers = async () => {
+    const query = `
+    SELECT u.user_id, u.name, u.email, r.role_name
+    FROM users u
+    JOIN roles r on u.role_id = r.role_id
+    `;
+
+    const result = await db.query(query);
+
+    return result.rows;
 }
 
 const verifyPassword = async (password, password_hash) => {
@@ -65,4 +77,4 @@ const authenticateUser = async (email, password) => {
     }
 }
 
-export { createUser, authenticateUser }
+export { createUser, authenticateUser, getAllUsers }
