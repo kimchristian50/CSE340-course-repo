@@ -8,7 +8,10 @@
             <%= project.title %>
         </h2>
         <p>
-            <a href="/edit-project/<%= project.project_id %>" class="link">Edit</a>
+            <!-- <a href="/edit-project/<%= project.project_id %>" class="link">Edit</a> -->
+            <% if (user && user.role_name==='admin' ) { %>
+                <a href="/edit-project/<%= project.project_id %>" class="link">Edit Project</a>
+                <% } %>
         </p>
         <p>
             <%= project.description %>
@@ -29,13 +32,15 @@
                 <% }); %>
 
         </ul>
-        <a href="/assign-categories/<%= project.project_id %>" class="link">Edit Categories</a>
-        <p></p>
-        <p>Sponsored by:
-            <a href="/organization/<%= project.organization_id %>">
-                <%= project.organization_name %>
-            </a>
-        </p>
+        <% if (user && user.role_name==='admin' ) { %>
+            <a href="/assign-categories/<%= project.project_id %>" class="link">Edit Categories</a>
+            <% } %>
+                <p></p>
+                <p>Sponsored by:
+                    <a href="/organization/<%= project.organization_id %>">
+                        <%= project.organization_name %>
+                    </a>
+                </p>
 
     </main>
     <%- include('partials/footer') %>

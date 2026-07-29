@@ -20,7 +20,10 @@
                     </a></li>
                 <% }) %>
         </ul>
-        <p><a href="/edit-organization/<%= organizationDetails.organization_id %>" class="link">Edit Organization</a>
+        <p>
+            <% if (user && user.role_name==='admin' ) { %>
+                <a href="/edit-organization/<%= organizationDetails.organization_id %>" class="link">Edit Organization</a>
+                <% } %>
         </p>
 
     </main>

@@ -26,9 +26,10 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
     const query = `
-    SELECT user_id, name, email, password_hash, role_id
-    FROM users
-    WHERE email = $1
+    SELECT u.user_id, u.name, u.email, u.password_hash, u.role_id, r.role_name
+    FROM users u
+    JOIN roles r on u.role_id = r.role_id
+    WHERE u.email = $1
     `;
 
     const queryParams = [email];
@@ -47,6 +48,7 @@ const verifyPassword = async (password, password_hash) => {
 
 const authenticateUser = async (email, password) => {
     const user = await findUserByEmail(email);
+    console.log(user.role_name);
 
     if (!user) {
         return null; // user not found
