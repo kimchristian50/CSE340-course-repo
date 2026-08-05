@@ -121,7 +121,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create the project_user table to handle the Many-to-Many relationship
+-- Create the project_users table to handle the Many-to-Many relationship
 CREATE TABLE project_users (
     project_id INT REFERENCES project(project_id) ON DELETE CASCADE,
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
