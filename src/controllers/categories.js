@@ -1,6 +1,6 @@
 // Import any needed model functions 
 import { getAllCategories, getCategoryDetails, getCategoriesByProject, getProjectsByCategory, updateCategoryAssignments, createCategory, updateCategory } from '../models/categories.js'
-import { getProjectDetails } from '../models/projects.js'
+import { getProjectDetails } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
 // Define validation and sanitization rules for project form

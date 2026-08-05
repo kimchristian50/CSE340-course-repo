@@ -30,7 +30,9 @@ import {
     requireLogin,
     showDashboard,
     requireRole,
-    showUsers
+    showUsers,
+    volunteerForProject,
+    removeVolunteerForProject
 } from './controllers/users.js';
 import { testErrorPage } from './controllers/errors.js';
 
@@ -60,6 +62,10 @@ router.get('/new-project', requireRole('admin'), showNewProjectForm);
 router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
 router.post('/edit-project/:id', requireRole('admin'), projectValidation, processEditProjectForm);
 router.post('/new-project', requireRole('admin'), projectValidation, processNewProjectForm);
+
+// Users
+router.post('/volunteer/:id', requireLogin, volunteerForProject);
+router.post('/remove-volunteer/:id', requireLogin, removeVolunteerForProject);
 
 // Categories
 router.get('/categories', showCategoriesPage);

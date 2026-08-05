@@ -121,6 +121,13 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create the project_user table to handle the Many-to-Many relationship
+CREATE TABLE project_users (
+    project_id INT REFERENCES project(project_id) ON DELETE CASCADE,
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, user_id)
+);
+
 SELECT 
 project.project_id,
 project.organization_id,
@@ -132,3 +139,10 @@ organization.name
 
 FROM project
 JOIN organization ON organization.organization_id = project.organization_id;
+
+INSERT INTO project_users (project_id, user_id) VALUES 
+(5, 3),
+(6, 8),
+(7, 3),
+(8, 9),
+(6, 11);

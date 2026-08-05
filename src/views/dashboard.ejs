@@ -8,9 +8,26 @@
         </p>
         <p>Email: <%= email %>
         </p>
-            <% if (user && user.role_name==='admin' ) { %>
-                <a href="/users" class="link">View All Users</a>
-                <% } %>
+        <h2>
+            <%= subtitle %>
+        </h2>
+        <ul>
+            <% userProjects.forEach(project=> { %>
+                <li>
+                    <div class="user-projects">
+                        <a href="/project/<%= project.project_id %>" class="tag">
+                            <%= project.title %>
+                        </a>
+                        <form action="/remove-volunteer/<%= project.project_id %>" method="POST" style="display:inline">
+                            <button type="submit" class="link">Remove</button>
+                        </form>
+                    </div>
+                </li>
+                <% }); %>
+        </ul>
+        <% if (user && user.role_name==='admin' ) { %>
+            <a href="/users" class="link">View All Users</a>
+            <% } %>
 
     </main>
     <%- include('partials/footer') %>

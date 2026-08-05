@@ -60,11 +60,11 @@ const verifyPassword = async (password, password_hash) => {
 
 const authenticateUser = async (email, password) => {
     const user = await findUserByEmail(email);
+    if (!user) {
+        return null; // check before trying to access user properties
+    }
     console.log(user.role_name);
 
-    if (!user) {
-        return null; // user not found
-    }
     // use verifyPassword to check if the password is correct
     const isPasswordValid = await verifyPassword(password, user.password_hash);
 
@@ -77,4 +77,58 @@ const authenticateUser = async (email, password) => {
     }
 }
 
-export { createUser, authenticateUser, getAllUsers }
+const getUsersByProject = async (projectId) => {
+    const query = `
+       SELECT
+        project.project_id,
+        project_users.user_id,
+        users.email,
+        project.title
+        FROM project
+        JOIN project_users ON project.project_id = project_users.project_id
+        JOIN users ON project_users.user_id = users.user_id
+        WHERE project.project_id = $1;
+      `;
+    const queryParams = [projectId];
+    const result = await db.query(query, queryParams);
+
+    return result.rows;
+}
+
+const addVolunteer = async (userId, projectId) => {
+    const query = `
+    INSERT INTO project_users (user_id, project_id)
+    VALUES ($1, $2);
+    `;
+
+    await db.query(query, [userId, projectId]);
+}
+
+const removeVolunteer = async (userId, projectId) => {
+    const deleteQuery = `
+    DELETE FROM project_users
+    WHERE project_id = $2 AND user_id = $1;
+  `;
+
+    await db.query(deleteQuery, [userId, projectId]);
+}
+
+const getAllUserProjects = async (userId) => {
+    const query = `
+       SELECT
+        project.project_id,
+        project_users.user_id,
+        users.email,
+        project.title
+        FROM project
+        JOIN project_users ON project.project_id = project_users.project_id
+        JOIN users ON project_users.user_id = users.user_id
+        WHERE users.user_id = $1;
+      `;
+    const queryParams = [userId];
+    const result = await db.query(query, queryParams);
+
+    return result.rows;
+}
+
+export { createUser, authenticateUser, getAllUsers, getUsersByProject, addVolunteer, removeVolunteer, getAllUserProjects }

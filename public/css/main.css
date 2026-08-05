@@ -329,6 +329,16 @@ form button[type="submit"]:active,
     text-decoration: none;
 }
 
+.user-projects {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+}
+
+.user-projects button {
+    margin-top: 0;
+}
+
 .form-group select {
     cursor: pointer;
     appearance: none;

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers, addVolunteer, removeVolunteer, getAllUserProjects } from '../models/users.js';
 
 const showUserRegistrationForm = async (req, res) => {
     const title = 'Register New User';
@@ -77,18 +77,21 @@ const processLogout = async (req, res) => {
 
 const requireLogin = (req, res, next) => {
     // check if session or user does not exist
-    if (!req.session.user || !req.session) {
+    if (!req.session || !req.session.user) {
         req.flash('error', 'You must be logged in to access that page.');
         return res.redirect('/login');
     }
     next();
 }
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
     const user = req.session.user;
-
+    const userId = req.session.user.user_id;
+    const userProjects = await getAllUserProjects(userId);
     const title = 'Dashboard';
-    res.render('dashboard', { title, name: user.name, email: user.email });
+    const subtitle = 'Your Projects';
+
+    res.render('dashboard', { title, name: user.name, email: user.email, subtitle, userProjects });
 }
 
 /**
@@ -124,6 +127,37 @@ const showUsers = async (req, res) => {
     res.render('users', { title, users });
 }
 
+const volunteerForProject = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id;
+    try {
+        await addVolunteer(userId, projectId);
+        req.flash('success', 'You have signed up to volunteer for this project!');
+    } catch (error) {
+        console.error('Error adding volunteer:', error);
+        req.flash('error', 'There was an error signing you up.');
+    }
+    res.redirect(`/project/${projectId}`);
+};
+
+const removeVolunteerForProject = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id;
+    try {
+        await removeVolunteer(userId, projectId);
+        req.flash('success', 'You have removed yourself as a volunteer for this project!');
+    } catch (error) {
+        console.error('Error removing volunteer:', error);
+        req.flash('error', 'There was an error removing you as a volunteer.');
+    }
+    const referrer = req.get('Referrer')
+    if (referrer && referrer.includes('dashboard')) {
+        res.redirect(referrer);
+    } else {
+        res.redirect(`/project/${projectId}`);
+    }
+}
+
 export {
     showUserRegistrationForm,
     processUserRegistrationForm,
@@ -133,5 +167,7 @@ export {
     requireLogin,
     showDashboard,
     requireRole,
-    showUsers
+    showUsers,
+    volunteerForProject,
+    removeVolunteerForProject
 };

@@ -48,7 +48,7 @@ async function getProjectsByCategory(category_id) {
 async function getCategoriesByProject(project_id) {
   const query = `
          SELECT
-		  project.project_id,
+		      project.project_id,
           category.category_id,
           name,
           title

@@ -2,6 +2,8 @@
 import { getAllProjects, getProjectDetails, getUpcomingProjects, createProject, updateProject } from '../models/projects.js'
 import { getCategoriesByProject } from '../models/categories.js'
 import { getAllOrganizations } from '../models/organizations.js'
+import { getUsersByProject } from '../models/users.js'
+
 import { body, validationResult } from 'express-validator';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -48,9 +50,10 @@ const showProjectDetailsPage = async (req, res) => {
     const project_id = req.params.id;
     const project = await getProjectDetails(project_id);
     const categories = await getCategoriesByProject(project_id);
+    const volunteers = await getUsersByProject(project_id);
     const title = 'Project Details';
 
-    await res.render('project', { title, project, categories }); // the 'project' here is the project.ejs view file
+    await res.render('project', { title, project, categories, volunteers }); // the 'project' here is the project.ejs view file
 }
 
 const showNewProjectForm = async (req, res) => {

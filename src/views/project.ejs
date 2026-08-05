@@ -27,20 +27,34 @@
                     <a href="/category/<%= category.category_id %>" class="tag">
                         <%= category.name %>
                     </a>
-
                 </li>
                 <% }); %>
 
         </ul>
-        <% if (user && user.role_name==='admin' ) { %>
-            <a href="/assign-categories/<%= project.project_id %>" class="link">Edit Categories</a>
-            <% } %>
-                <p></p>
-                <p>Sponsored by:
-                    <a href="/organization/<%= project.organization_id %>">
-                        <%= project.organization_name %>
-                    </a>
-                </p>
+        <% if (user) { %>
+            <% const isVolunteer=volunteers.some(v=> v.user_id == user.user_id); %>
+                <% if (isVolunteer) { %>
+                    <p>You have signed up to volunteer for this project!</p>
+                    <form action="/remove-volunteer/<%= project.project_id %>" method="POST" style="display:inline">
+                        <button type="submit" class="link">Remove yourself as a Volunteer</button>
+                    </form>
+                    <% } else { %>              
+                        <form action="/volunteer/<%= project.project_id %>" method="POST" style="display:inline">
+                            <button type="submit" class="link">Volunteer for this Project</button>
+                        </form>
+                        <% } %>
+                            <% } %>
+
+                                <% if (user && user.role_name==='admin' ) { %>
+                                    <a href="/assign-categories/<%= project.project_id %>" class="link">Edit
+                                        Categories</a>
+                                    <% } %>
+                                        <p></p>
+                                        <p>Sponsored by:
+                                            <a href="/organization/<%= project.organization_id %>">
+                                                <%= project.organization_name %>
+                                            </a>
+                                        </p>
 
     </main>
     <%- include('partials/footer') %>
